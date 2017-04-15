@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProduct;
 use App\Http\Requests\UpdateProduct;
 use App\Product;
 use Illuminate\Http\Request;
@@ -33,12 +34,22 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Requests\StoreProduct $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProduct $request)
     {
-        dd($request);
+        $filename = md5(microtime()).'.xslx';
+
+        try {
+            $request->file('file')->storeAs('spreadsheets', $filename);
+            // job dispatch
+            $request->session()->flash('success', 'The file is being imported, please wait...');
+        } catch (\Exception $e) {
+            $request->session()->flash('error', $e->getMessage());
+        }
+
+        return view('product.create');
     }
 
     /**
