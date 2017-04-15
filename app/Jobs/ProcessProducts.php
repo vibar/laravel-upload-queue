@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Akeneo\Component\SpreadsheetParser\SpreadsheetParser;
+use App\Events\ProductsImported;
 use App\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -11,7 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Log;
 
-class ProductsImport implements ShouldQueue
+class ProcessProducts implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -35,7 +36,7 @@ class ProductsImport implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Products Import job: '.$this->filename);
+        Log::info('Process products job: '.$this->filename);
 
         $workbook = SpreadsheetParser::open(storage_path().'/app/spreadsheets/'.$this->filename);
         $columnsIndex = 3;
@@ -68,5 +69,7 @@ class ProductsImport implements ShouldQueue
         }
 
         Log::info('Products imported.');
+
+        event(new ProductsImported($this->filename));
     }
 }

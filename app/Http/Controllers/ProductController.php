@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProduct;
 use App\Http\Requests\UpdateProduct;
-use App\Jobs\ProductsImport;
+use App\Jobs\ProcessProducts;
 use App\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -44,7 +43,7 @@ class ProductController extends Controller
 
         try {
             $request->file('file')->storeAs('spreadsheets', $filename);
-            dispatch(new ProductsImport($filename));
+            dispatch(new ProcessProducts($filename));
             $request->session()->flash('success', 'Processing, please wait...');
         } catch (\Exception $e) {
             $request->session()->flash('error', $e->getMessage());
