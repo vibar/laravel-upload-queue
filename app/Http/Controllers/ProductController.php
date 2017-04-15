@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProduct;
 use App\Http\Requests\UpdateProduct;
+use App\Jobs\ProductsImport;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::orderBy('lm')->get();
 
         return view('product.index', compact('products'));
     }
@@ -39,12 +40,12 @@ class ProductController extends Controller
      */
     public function store(StoreProduct $request)
     {
-        $filename = md5(microtime()).'.xslx';
+        $filename = md5(microtime()).'.xlsx';
 
         try {
             $request->file('file')->storeAs('spreadsheets', $filename);
-            // job dispatch
-            $request->session()->flash('success', 'The file is being imported, please wait...');
+            dispatch(new ProductsImport($filename));
+            $request->session()->flash('success', 'Processing, please wait...');
         } catch (\Exception $e) {
             $request->session()->flash('error', $e->getMessage());
         }

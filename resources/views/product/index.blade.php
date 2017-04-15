@@ -5,14 +5,24 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Products</div>
+                <div class="panel-heading">
+                    Products
+                    <span class="pull-right">
+                        @if (count($products))
+                            {{ count($products) }}
+                            {{ count($products) == 1 ? 'item' : 'items' }}
+                        @endif
+                    </span>
+                </div>
 
                 <div class="panel-body">
+
+                    @if (count($products))
 
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>LM</th>
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
@@ -22,7 +32,8 @@
                         </thead>
                         <tbody>
 
-                            @foreach($products as $product)
+                            @foreach ($products as $product)
+
                             <tr>
                                 <th scope="row">{{ $product->lm }}</th>
                                 <td>{{ $product->name }}</td>
@@ -38,10 +49,21 @@
                                     </form>
                                 </td>
                             </tr>
+
                             @endforeach
 
                         </tbody>
                     </table>
+
+                    @else
+
+                    <p>
+                        <a href="{{ route('product.create') }}">
+                            Import your products
+                        </a>
+                    </p>
+
+                    @endif
 
                 </div>
             </div>
