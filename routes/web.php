@@ -12,10 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('product.index');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');
 Route::resource('/product', 'ProductController');

@@ -977,13 +977,7 @@ var app = new Vue({
 });
 
 Echo.channel('Product.import').listen('ProductsImported', function (e) {
-  console.log(e);
-  console.log(document.getElementById('status-bar'));
-  alert('foi');
-  //$('#status-bar')
-  //    .removeClass('alert-waiting')
-  //    .addClass('alert-success')
-  //    .html('The file was imported.');
+  window.location = "/";
 });
 
 /***/ }),
