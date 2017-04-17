@@ -18,3 +18,7 @@ Vue.component('example', require('./components/Example.vue'));
 const app = new Vue({
     el: '#app'
 });
+
+Echo.channel('Product.import').listen('ProductsImported', (e) => {
+    window.location = "/";
+});

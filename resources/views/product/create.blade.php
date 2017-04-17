@@ -8,7 +8,7 @@
                 <div class="panel-heading">Import products</div>
                 <div class="panel-body">
                     @if (session('success'))
-                        <div class="alert alert-warning">
+                        <div class="alert alert-warning" id="status-bar">
                             {{ session('success') }}
                         </div>
                     @endif

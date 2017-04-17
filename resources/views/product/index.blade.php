@@ -45,7 +45,7 @@
                                         <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-default">edit</a>
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
-                                        <button class="btn btn-sm btn-danger">delete</button>
+                                        <button class="btn btn-sm btn-default">delete</button>
                                     </form>
                                 </td>
                             </tr>

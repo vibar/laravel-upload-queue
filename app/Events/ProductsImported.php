@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Support\Facades\Log;
 
-class ProductsImported
+class ProductsImported implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -38,6 +38,6 @@ class ProductsImported
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('Product.import');
     }
 }
