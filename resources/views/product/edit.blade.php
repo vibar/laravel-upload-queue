@@ -15,7 +15,7 @@
                             <label for="lm" class="col-md-4 control-label">LM</label>
 
                             <div class="col-md-6">
-                                <input id="lm" type="text" class="form-control" name="lm" value="{{ old('lm') ?: $product->lm }}" required autofocus maxlength="10">
+                                <input id="lm" type="text" class="form-control" name="lm" value="{{ old('lm') ?: $product->lm }}" required autofocus readonly maxlength="10">
 
                                 @if ($errors->has('lm'))
                                     <span class="help-block">

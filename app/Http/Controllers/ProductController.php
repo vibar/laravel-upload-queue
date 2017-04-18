@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProduct;
 use App\Http\Requests\UpdateProduct;
 use App\Jobs\ProcessProducts;
 use App\Product;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -46,21 +47,11 @@ class ProductController extends Controller
             dispatch(new ProcessProducts($filename));
             $request->session()->flash('success', 'Processing, please wait...');
         } catch (\Exception $e) {
-            $request->session()->flash('error', $e->getMessage());
+            $request->session()->flash('error', 'An error has occurred.');
+            Log::error($e->getMessage());
         }
 
         return view('product.create');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
     }
 
     /**
@@ -83,7 +74,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProduct $request, Product $product)
     {
-        $product->fill($request->all());
+        $data = $request->except('lm');
+        $product->fill($data);
         $product->save();
 
         return redirect()->route('product.index');
