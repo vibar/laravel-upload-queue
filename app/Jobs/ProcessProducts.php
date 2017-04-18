@@ -33,12 +33,13 @@ class ProcessProducts implements ShouldQueue
 
     /**
      * Execute the job.
+     * @param SpreadsheetParser $parser
      */
-    public function handle()
+    public function handle(SpreadsheetParser $parser)
     {
         Log::info('Process products job: '.$this->filename);
 
-        $workbook = SpreadsheetParser::open(storage_path().'/app/spreadsheets/'.$this->filename);
+        $workbook = $parser->open(storage_path().'/app/spreadsheets/'.$this->filename);
         $columnsIndex = 3;
 
         foreach ($workbook->getWorksheets() as $index => $title) {
