@@ -38,6 +38,7 @@ php vendor/bin/phpunit
 
 - Improve tests 
 - Repositories
+- Custom exceptions
 - Broadcast private channel
-- Decouple parse file logic
+- Decouple parse file logic (bind abstract Parse / SpreadsheetParser)
 - 2 jobs? extract and import 
