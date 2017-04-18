@@ -2,81 +2,80 @@
 
 namespace Tests\Unit;
 
+use App\Jobs\ProcessProducts;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExampleTest extends TestCase
+class ProductTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
+    use DatabaseTransactions;
+
+    private $filename;
+
+    public function setUp()
     {
-        $this->assertTrue(true);
+        parent::setUp();
+
+        $this->filename = 'products.xlsx';
     }
 
-    public function testAvatarUpload()
+    public function testStorage()
     {
-        Storage::fake('avatars');
+        Storage::fake('spreadsheets');
 
-        $response = $this->json('POST', '/avatar', [
-            'avatar' => UploadedFile::fake()->image('avatar.jpg')
+        $response = $this->post('/product', [
+            'file' => UploadedFile::fake()->create('products.xlsx', 1024),
         ]);
 
-        // Assert the file was stored...
-        Storage::disk('avatars')->assertExists('avatar.jpg');
+        // TODO: test exceptions: mimes, maxsize...
 
-        // Assert a file does not exist...
-        Storage::disk('avatars')->assertMissing('missing.jpg');
+        $response->assertStatus(200);
+
+        // Assert the file was stored...
+        Storage::disk('spreadsheets')->assertExists('products.xlsx');
     }
 
-    public function testOrderShipping()
+    public function testProcessProductsQueue()
     {
         Queue::fake();
 
-        // Perform order shipping...
+        $this->post('/product', [
+            'file' => UploadedFile::fake()->create($this->filename, 1024)
+        ]);
 
-        Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
-            return $job->order->id === $order->id;
+        Queue::assertPushed(ProcessProducts::class, function ($job) {
+            return $job->filename === $this->filename;
         });
-
-        // Assert a job was pushed to a given queue...
-        Queue::assertPushedOn('queue-name', ShipOrder::class);
-
-        // Assert a job was not pushed...
-        Queue::assertNotPushed(AnotherJob::class);
     }
 
-    public function testOrderShipping()
+    public function testProcessProductsJob()
     {
         Bus::fake();
 
-        // Perform order shipping...
+        $this->post('/product', [
+            'file' => UploadedFile::fake()->create($this->filename, 1024)
+        ]);
 
-        Bus::assertDispatched(ShipOrder::class, function ($job) use ($order) {
-            return $job->order->id === $order->id;
+        Bus::assertDispatched(ProcessProducts::class, function ($job) {
+            return $job->filename === $this->filename;
         });
-
-        // Assert a job was not dispatched...
-        Bus::assertNotDispatched(AnotherJob::class);
     }
 
-    /**
-     * Test order shipping.
-     */
-    public function testOrderShipping()
+    public function testProductsImportedEvent()
     {
         Event::fake();
 
-        // Perform order shipping...
+        $this->post('/product', [
+            'file' => UploadedFile::fake()->create('products.xlsx', 1024)
+        ]);
 
-        Event::assertDispatched(OrderShipped::class, function ($e) use ($order) {
-            return $e->order->id === $order->id;
+        Event::assertDispatched(ProcessProducts::class, function ($e) {
+            return $e->filename === $this->filename;
         });
-
-        Event::assertNotDispatched(OrderFailedToShip::class);
     }
 }

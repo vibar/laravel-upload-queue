@@ -2,52 +2,22 @@
 
 namespace Tests\Feature;
 
+use App\Product;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExampleTest extends TestCase
+class ProductTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
+    public function testProductsImport()
     {
-        $response = $this->get('/');
+        $response = $this->get('/product/create');
 
         $response->assertStatus(200);
     }
 
-    public function testApplication()
+    public function testListProducts()
     {
-        $response = $this->withSession(['foo' => 'bar'])
-            ->get('/');
-    }
+        $response = $this->get('/product');
 
-    public function testApplication()
-    {
-        $user = factory(User::class)->create();
-
-        $response = $this->actingAs($user)
-            ->withSession(['foo' => 'bar'])
-            ->get('/');
-    }
-
-    public function testAvatarUpload()
-    {
-        Storage::fake('avatars');
-
-        $response = $this->json('POST', '/avatar', [
-            'avatar' => UploadedFile::fake()->image('avatar.jpg')
-        ]);
-
-        // Assert the file was stored...
-        Storage::disk('avatars')->assertExists('avatar.jpg');
-
-        // Assert a file does not exist...
-        Storage::disk('avatars')->assertMissing('missing.jpg');
+        $response->assertStatus(200);
     }
 }
