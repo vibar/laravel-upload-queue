@@ -6,10 +6,21 @@ use App\Http\Requests\StoreProduct;
 use App\Http\Requests\UpdateProduct;
 use App\Jobs\ProcessProducts;
 use App\Product;
+use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +28,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('lm')->get();
+        $products = $this->productRepository->all('lm');
 
         return view('product.index', compact('products'));
     }
@@ -75,8 +86,7 @@ class ProductController extends Controller
     public function update(UpdateProduct $request, Product $product)
     {
         $data = $request->except('lm');
-        $product->fill($data);
-        $product->save();
+        $this->productRepository->update($product->id, $data);
 
         return redirect()->route('product.index');
     }
@@ -89,7 +99,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
+        $this->productRepository->delete($product->id);
 
         return redirect()->route('product.index');
     }
