@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use Akeneo\Component\SpreadsheetParser\SpreadsheetParser;
+
+use App\Contracts\Services\ParserInterface;
 use App\Events\ProductsImported;
 use App\Product;
 use Illuminate\Bus\Queueable;
@@ -33,9 +34,9 @@ class ProcessProducts implements ShouldQueue
 
     /**
      * Execute the job.
-     * @param SpreadsheetParser $parser
+     * @param ParserInterface $parser
      */
-    public function handle(SpreadsheetParser $parser)
+    public function handle(ParserInterface $parser)
     {
         Log::info('Process products job: '.$this->filename);
 

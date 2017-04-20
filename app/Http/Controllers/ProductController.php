@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Requests\StoreProduct;
 use App\Http\Requests\UpdateProduct;
 use App\Jobs\ProcessProducts;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class ProductController extends Controller
 {
     /**
-     * @var ProductRepository
+     * @var \App\Repositories\ProductRepository
      */
     private $productRepository;
 
@@ -94,7 +95,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
