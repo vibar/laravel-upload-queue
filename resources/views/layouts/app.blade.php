@@ -17,6 +17,10 @@
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'broadcast' => [
+                'provider' => ($provider = config('broadcasting.default')),
+                'key' => config('broadcasting.connections.'.$provider.'.key'),
+            ],
         ]) !!};
     </script>
 </head>

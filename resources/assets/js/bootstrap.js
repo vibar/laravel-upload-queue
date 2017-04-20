@@ -41,6 +41,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  window.Pusher = require('pusher-js');
 
  window.Echo = new Echo({
-     broadcaster: 'pusher',
-     key: '471922e08002d2da84d2'
+     broadcaster: window.Laravel.broadcast.provider,
+     key: window.Laravel.broadcast.key
  });
