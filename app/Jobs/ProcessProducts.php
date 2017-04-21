@@ -40,34 +40,16 @@ class ProcessProducts implements ShouldQueue
     {
         Log::info('Process products job: '.$this->filename);
 
-        $workbook = $parser->open(storage_path().'/app/spreadsheets/'.$this->filename);
-        $columnsIndex = 3;
+        $path = storage_path().'/app/spreadsheets/'.$this->filename;
 
-        foreach ($workbook->getWorksheets() as $index => $title) {
+        $data = $parser->open($path, 3)->get();
 
-            $columns = [];
+        foreach ($data as $row) {
+            // TODO: validate rows
 
-            // TODO: chunk
-
-            foreach ($workbook->createRowIterator($index) as $row => $values) {
-
-                if ($row < $columnsIndex) {
-                    continue;
-                }
-
-                if ($row == $columnsIndex) { // columns
-                    $columns = $values;
-                    continue;
-                }
-
-                $item = array_combine($columns, $values);
-
-                // TODO: validate rows
-
-                $product = Product::firstOrNew(['lm' => $item['lm']]);
-                $product->fill($item);
-                $product->save();
-            }
+            $product = Product::firstOrNew(['lm' => $row['lm']]);
+            $product->fill($row);
+            $product->save();
         }
 
         Log::info('Products imported.');
