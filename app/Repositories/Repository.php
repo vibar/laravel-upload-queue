@@ -61,6 +61,22 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
+     * Data import
+     *
+     * @param array $data
+     * @param string $key
+     */
+    public function import(array $data, string $key)
+    {
+        foreach ($data as $row) {
+            // TODO: validate
+            $model = $this->model->firstOrNew([$key => $row[$key]]);
+            $model->fill($row);
+            $model->save();
+        }
+    }
+
+    /**
      * Delete a entity in repository by id
      * @param int $id
      * @return int

@@ -33,6 +33,14 @@ interface RepositoryInterface
     public function update(int $id, array $attributes);
 
     /**
+     * Data import
+     *
+     * @param array $data
+     * @param string $key
+     */
+    public function import(array $data, string $key);
+
+    /**
      * Delete a entity in repository by id
      *
      * @param int $id
