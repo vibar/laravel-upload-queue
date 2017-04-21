@@ -50,7 +50,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ route('product.index') }}">List products</a></li>
+                        <li><a href="{{ route('product.index') }}">Products</a></li>
                         <li><a href="{{ route('product.create') }}">Import</a></li>
                     </ul>
                 </div>
