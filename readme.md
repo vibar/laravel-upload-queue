@@ -1,4 +1,4 @@
-## Laravel queue and websocket notification test
+# Laravel test with upload, queue and broacasting event
 
 ### Installation
 
@@ -37,8 +37,6 @@ php vendor/bin/phpunit
 ### TODO
 
 - Improve tests 
-- Repositories
 - Custom exceptions
+- Configs
 - Broadcast private channel
-- Decouple parse file logic (bind abstract Parse / SpreadsheetParser)
-- 2 jobs? extract and import 
