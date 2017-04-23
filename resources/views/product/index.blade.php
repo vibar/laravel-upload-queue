@@ -41,7 +41,7 @@
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->free_shipping }}</td>
                                 <td>
-                                    <form method="POST" action="{{ route('product.destroy', $product->id) }}" onsubmit="return confirm('Are you sure you want to delete the item {{ $product->lm }}?')">
+                                    <form method="POST" action="{{ route('product.destroy', $product->id) }}" onsubmit="return confirm('Are you sure you want to delete?')">
                                         <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-default">edit</a>
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}

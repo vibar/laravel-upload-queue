@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Requests\StoreProduct;
-use App\Http\Requests\UpdateProduct;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Jobs\ProcessProducts;
-use App\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -47,10 +46,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreProduct $request
+     * @param StoreProductRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProduct $request)
+    public function store(StoreProductRequest $request)
     {
         $filename = md5(microtime()).'.xlsx';
 
@@ -69,25 +68,27 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(int $id)
     {
+        $product = $this->productRepository->find($id);
+
         return view('product.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateProduct $request
-     * @param  \App\Product $product
+     * @param UpdateProductRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProduct $request, Product $product)
+    public function update(UpdateProductRequest $request, int $id)
     {
         $data = $request->except('lm');
-        $this->productRepository->update($product->id, $data);
+        $this->productRepository->update($id, $data);
 
         return redirect()->route('product.index');
     }
@@ -95,12 +96,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product $product
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(int $id)
     {
-        $this->productRepository->delete($product->id);
+        $this->productRepository->delete($id);
 
         return redirect()->route('product.index');
     }

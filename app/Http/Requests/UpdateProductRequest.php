@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Repositories\ProductRepository;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProduct extends FormRequest
+class UpdateProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,11 +20,13 @@ class UpdateProduct extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param ProductRepository $productRepository
      * @return array
      */
-    public function rules()
+    public function rules(ProductRepository $productRepository)
     {
-        $product = $this->route('product');
+        $id = $this->route('id');
+        $product = $productRepository->find($id);
 
         return [
             'lm' => 'required|integer|digits_between:4,10|unique:products,lm,'.$product->id,
