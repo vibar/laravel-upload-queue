@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 
+use App\Contracts\Repositories\ProductRepositoryInterface;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Jobs\ProcessProducts;
-use App\Repositories\ProductRepository;
+use App\Jobs\ProcessProductsJob;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     /**
-     * @var \App\Repositories\ProductRepository
+     * @var \App\Contracts\Repositories\ProductRepositoryInterface
      */
     private $productRepository;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }
@@ -46,7 +46,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreProductRequest $request
+     * @param \App\Http\Requests\StoreProductRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProductRequest $request)
@@ -55,7 +55,7 @@ class ProductController extends Controller
 
         try {
             $request->file('file')->storeAs('spreadsheets', $filename);
-            dispatch(new ProcessProducts($filename));
+            dispatch(new ProcessProductsJob($filename));
             $request->session()->flash('success', 'Processing, please wait...');
         } catch (\Exception $e) {
             $request->session()->flash('error', 'An error has occurred.');
@@ -81,7 +81,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateProductRequest $request
+     * @param \App\Http\Requests\UpdateProductRequest $request
      * @param int $id
      * @return \Illuminate\Http\Response
      */

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Repositories\ProductRepository;
+use App\Contracts\Repositories\ProductRepositoryInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductRequest extends FormRequest
@@ -20,10 +20,10 @@ class UpdateProductRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param ProductRepository $productRepository
+     * @param \App\Contracts\Repositories\ProductRepositoryInterface $productRepository
      * @return array
      */
-    public function rules(ProductRepository $productRepository)
+    public function rules(ProductRepositoryInterface $productRepository)
     {
         $id = $this->route('id');
         $product = $productRepository->find($id);

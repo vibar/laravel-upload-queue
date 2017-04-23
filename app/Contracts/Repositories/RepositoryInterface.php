@@ -2,7 +2,10 @@
 
 namespace App\Contracts\Repositories;
 
-
+/**
+ * Eloquent Repository
+ * @package App\Contracts\Repositories
+ */
 interface RepositoryInterface
 {
     /**

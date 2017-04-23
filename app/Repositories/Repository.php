@@ -5,6 +5,10 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\RepositoryInterface;
 
+/**
+ * Eloquent Repository
+ * @package App\Repositories
+ */
 abstract class Repository implements RepositoryInterface
 {
     protected $model;

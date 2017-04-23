@@ -3,18 +3,16 @@
 namespace App\Jobs;
 
 
+use App\Contracts\Repositories\ProductRepositoryInterface;
 use App\Contracts\Services\ParserInterface;
 use App\Events\ProductsImported;
-use App\Product;
-use App\Repositories\ProductRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
-class ProcessProducts implements ShouldQueue
+class ProcessProductsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -44,10 +42,10 @@ class ProcessProducts implements ShouldQueue
 
     /**
      * Execute the job.
-     * @param ProductRepository $productRepository
-     * @param ParserInterface $parser
+     * @param \App\Contracts\Repositories\ProductRepositoryInterface $productRepository
+     * @param \App\Contracts\Services\ParserInterface $parser
      */
-    public function handle(ProductRepository $productRepository, ParserInterface $parser)
+    public function handle(ProductRepositoryInterface $productRepository, ParserInterface $parser)
     {
         $products = $parser->open($this->path, self::PARSER_OFFSET_ROW)->get();
         $productRepository->import($products, self::PRODUCT_KEY);

@@ -3,9 +3,10 @@
 namespace App\Repositories;
 
 
+use App\Contracts\Repositories\ProductRepositoryInterface;
 use App\Product;
 
-class ProductRepository extends Repository
+class ProductRepository extends Repository implements ProductRepositoryInterface
 {
     /**
      * Specify Model class name
