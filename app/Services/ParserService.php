@@ -43,14 +43,13 @@ class ParserService implements ParserInterface
         $this->path = $path;
         $this->offsetRow = $offsetRow;
         $this->content = $this->spreadsheetParser->open($this->path);
-
         return $this;
     }
 
     /**
      * @return array
      */
-    public function get() : array
+    public function extract() : array
     {
         $data = [];
 

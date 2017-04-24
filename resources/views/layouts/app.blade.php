@@ -57,6 +57,29 @@
             </div>
         </nav>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <ul>
+                                @foreach($errors->all() as $message)
+                                    <li>{{ $message }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @isset ($status)
+                        <div class="alert alert-{{ $status['type'] }}">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{ $status['message'] }}
+                        </div>
+                    @endisset
+                </div>
+            </div>
+        </div>
+
         @yield('content')
     </div>
 

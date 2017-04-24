@@ -7,17 +7,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Import</div>
                 <div class="panel-body">
-                    @if (session('success'))
-                        <div class="alert alert-warning" id="status-bar">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
 
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}

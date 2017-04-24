@@ -14,6 +14,6 @@ interface ParserInterface
     /**
      * @return array
      */
-    public function get() : array;
+    public function extract() : array;
 
 }

@@ -7,7 +7,6 @@ use App\Contracts\Repositories\ProductRepositoryInterface;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Jobs\ProcessProductsJob;
-use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -51,18 +50,17 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $filename = md5(microtime()).'.xlsx';
+        // $extension = $request->file('file')->extension();
+        $extension = 'xlsx';
+        $filename = md5(microtime()).'.'.$extension;
+        $request->file('file')->storeAs('spreadsheets', $filename);
 
-        try {
-            $request->file('file')->storeAs('spreadsheets', $filename);
-            dispatch(new ProcessProductsJob($filename));
-            $request->session()->flash('success', 'Processing, please wait...');
-        } catch (\Exception $e) {
-            $request->session()->flash('error', 'An error has occurred.');
-            Log::error($e->getMessage());
-        }
+        dispatch(new ProcessProductsJob($filename));
 
-        return view('product.create');
+        return view('product.create')->with('status', [
+            'type' => 'warning',
+            'message' => 'Processing, please wait...',
+        ]);
     }
 
     /**
