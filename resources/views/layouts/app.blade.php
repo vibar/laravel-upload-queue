@@ -72,7 +72,6 @@
                     @endif
                     @isset ($status)
                         <div class="alert alert-{{ $status['type'] }}">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             {{ $status['message'] }}
                         </div>
                     @endisset
