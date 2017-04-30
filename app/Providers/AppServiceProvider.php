@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'App\Contracts\Services\ParserInterface',
+            'App\Contracts\Services\ParserServiceInterface',
             'App\Services\ParserService'
         );
     }

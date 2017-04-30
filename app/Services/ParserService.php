@@ -4,9 +4,9 @@ namespace App\Services;
 
 
 use Akeneo\Component\SpreadsheetParser\SpreadsheetParser;
-use App\Contracts\Services\ParserInterface;
+use App\Contracts\Services\ParserServiceInterface;
 
-class ParserService implements ParserInterface
+class ParserService implements ParserServiceInterface
 {
     /**
      * @var string

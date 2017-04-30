@@ -3,7 +3,7 @@
 namespace App\Contracts\Services;
 
 
-interface ParserInterface
+interface ParserServiceInterface
 {
     /**
      * @param string $path
