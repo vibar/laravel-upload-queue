@@ -24,7 +24,7 @@ interface RepositoryInterface
      * @param array $columns
      * @return mixed
      */
-    public function all(string $orderBy, string $direction = 'asc', array $columns = ['*']);
+    public function all(string $orderBy = 'id', string $direction = 'asc', array $columns = ['*']);
 
     /**
      * Update a entity in repository by id
@@ -34,14 +34,6 @@ interface RepositoryInterface
      * @return mixed
      */
     public function update(int $id, array $attributes);
-
-    /**
-     * Data import
-     *
-     * @param array $data
-     * @param string $key
-     */
-    public function import(array $data, string $key);
 
     /**
      * Delete a entity in repository by id

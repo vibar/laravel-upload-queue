@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 
 use App\Contracts\Repositories\RepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Eloquent Repository
@@ -13,16 +14,10 @@ abstract class Repository implements RepositoryInterface
 {
     protected $model;
 
-    public function __construct()
+    public function __construct(Model $model)
     {
-        $this->model = $this->getModel();
+        $this->model = $model;
     }
-
-    /**
-     * Specify Model class name
-     * @return string
-     */
-    abstract public function getModel();
 
     /**
      * Find data by id
@@ -41,7 +36,7 @@ abstract class Repository implements RepositoryInterface
      * @param array $columns
      * @return mixed
      */
-    public function all(string $orderBy, string $direction = 'asc', array $columns = ['*'])
+    public function all(string $orderBy = 'id', string $direction = 'asc', array $columns = ['*'])
     {
         $data = $this->model
             ->select($columns)
@@ -62,22 +57,6 @@ abstract class Repository implements RepositoryInterface
         $model = $this->find($id);
         $model->fill($attributes);
         return $model->save();
-    }
-
-    /**
-     * Data import
-     *
-     * @param array $data
-     * @param string $key
-     */
-    public function import(array $data, string $key)
-    {
-        foreach ($data as $row) {
-            // TODO: validate
-            $model = $this->model->firstOrNew([$key => $row[$key]]);
-            $model->fill($row);
-            $model->save();
-        }
     }
 
     /**
