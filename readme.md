@@ -37,6 +37,4 @@ php vendor/bin/phpunit
 ### TODO
 
 - Improve tests 
-- Custom exceptions
-- Configs
 - Broadcast private channel

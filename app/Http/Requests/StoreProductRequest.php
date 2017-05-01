@@ -23,15 +23,15 @@ class StoreProductRequest extends FormRequest
      */
     public function rules()
     {
-        $max_file = 5 * 1024; // in kb
-        $mimes = 'xlsx';
-        $mimetypes = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $maxsize = config('parser.maxsize');
+        $mimes = join(',', config('parser.mimes'));
+        $mimetypes = join(',', config('parser.mimetypes'));
 
         return [
             'file' => 'required'
-//                .'|mimes:'.$mimes
-//                .'|mimetypes:'.$mimetypes
-                .'|max:'.$max_file,
+                //.'|mimes:'.$mimes
+                //.'|mimetypes:'.$mimetypes
+                .'|max:'.$maxsize,
         ];
     }
 }

@@ -26,7 +26,7 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
-                                <th>Shipping</th>
+                                <th>Free shipping</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -39,7 +39,7 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->category }}</td>
                                 <td>{{ $product->price }}</td>
-                                <td>{{ $product->free_shipping }}</td>
+                                <td>{{ $product->free_shipping ? 'yes' : 'no'}}</td>
                                 <td>
                                     <form method="POST" action="{{ route('product.destroy', $product->id) }}" onsubmit="return confirm('Are you sure you want to delete?')">
                                         <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-default">edit</a>

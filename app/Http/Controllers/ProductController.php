@@ -53,6 +53,7 @@ class ProductController extends Controller
         // $extension = $request->file('file')->extension();
         $extension = 'xlsx';
         $filename = md5(microtime()).'.'.$extension;
+
         $request->file('file')->storeAs('spreadsheets', $filename);
 
         dispatch(new ProcessProductsJob($filename));

@@ -16,9 +16,6 @@ class ProcessProductsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    const PARSER_OFFSET_ROW = 3;
-    const PRODUCT_KEY = 'lm';
-
     /**
      * @var string
      */
@@ -37,7 +34,7 @@ class ProcessProductsJob implements ShouldQueue
     public function __construct(string $filename)
     {
         $this->filename = $filename;
-        $this->path = storage_path().'/app/spreadsheets/'.$this->filename;
+        $this->path = config('parser.path').$this->filename;
     }
 
     /**
@@ -47,8 +44,8 @@ class ProcessProductsJob implements ShouldQueue
      */
     public function handle(ProductRepositoryInterface $productRepository, ParserServiceInterface $parser)
     {
-        $products = $parser->parse($this->path, self::PARSER_OFFSET_ROW);
-        $productRepository->import($products, self::PRODUCT_KEY);
+        $products = $parser->parse($this->path, 3);
+        $productRepository->import($products, 'lm');
 
         event(new ProductsImported($this->filename));
     }
