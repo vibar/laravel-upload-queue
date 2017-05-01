@@ -34,23 +34,22 @@ class ParserService implements ParserServiceInterface
     }
 
     /**
-     * @param string $path
-     * @param int $offsetRow
-     * @return ParserService
+     * @param string|string $path
+     * @param int|int $offsetRow
+     * @return array
+     * @throws \Exception
      */
-    public function open(string $path, int $offsetRow = 0)
+    public function parse(string $path, int $offsetRow = 0) : array
     {
         $this->path = $path;
         $this->offsetRow = $offsetRow;
-        $this->content = $this->spreadsheetParser->open($this->path);
-        return $this;
-    }
 
-    /**
-     * @return array
-     */
-    public function extract() : array
-    {
+        if (! file_exists($this->path)) {
+            throw new \Exception('Open file error.');
+        }
+
+        $this->content = $this->spreadsheetParser->open($this->path);
+
         $data = [];
 
         foreach ($this->content->getWorksheets() as $index => $title) {

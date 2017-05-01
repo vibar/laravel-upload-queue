@@ -47,7 +47,7 @@ class ProcessProductsJob implements ShouldQueue
      */
     public function handle(ProductRepositoryInterface $productRepository, ParserServiceInterface $parser)
     {
-        $products = $parser->open($this->path, self::PARSER_OFFSET_ROW)->extract();
+        $products = $parser->parse($this->path, self::PARSER_OFFSET_ROW);
         $productRepository->import($products, self::PRODUCT_KEY);
 
         event(new ProductsImported($this->filename));
